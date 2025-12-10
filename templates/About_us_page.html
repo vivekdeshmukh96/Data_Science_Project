@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="About_us_page.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='About_us_page.css') }}">
 
 </head>
 <body>
@@ -13,10 +13,10 @@
     <!-- Navbar Section -->
     <nav class="navbar">
         <ul>
-            <li><a href="#" id="home-link" class="text-hover">Home</a></li>
-            <li><a href="uplodepage.html" class="text-hover">Upload</a></li>
-            <li><a href="contact_us_page.html" class="text-hover">Contact Us</a></li>
-            <li><a href="#" class="text-hover">About Us</a></li>
+            <li><a href="/" id="home-link" class="text-hover">Home</a></li>
+            <li><a href="/upload" class="text-hover">Upload</a></li>
+            <li><a href="/contact" class="text-hover">Contact Us</a></li>
+            <li><a href="/about" class="text-hover">About Us</a></li>
         </ul>
     </nav>
 

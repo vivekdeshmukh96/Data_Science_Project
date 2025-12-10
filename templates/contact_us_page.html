@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Contact Us</title>
-    <link rel="stylesheet" href="contact_us_page.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_us_page.css') }}">
 </head>
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="mini_pr.html" class="text-hover">Home</a></li>
-            <li><a href="uplodepage.html" class="text-hover">Upload</a></li>
-            <li><a href="contact_us_page.html" id="contact-link" class="text-hover">Contact Us</a></li>
-            <li><a href="#" class="text-hover">About Us</a></li>
+            <li><a href="/" class="text-hover">Home</a></li>
+            <li><a href="/upload" class="text-hover">Upload</a></li>
+            <li><a href="/contact" id="contact-link" class="text-hover">Contact Us</a></li>
+            <li><a href="/about" class="text-hover">About Us</a></li>
         </ul>
     </nav>
 

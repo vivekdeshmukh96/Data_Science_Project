@@ -13,80 +13,89 @@ app = Flask(__name__)
 # Route for rendering the HTML page (frontend)
 @app.route('/')
 def index():
-    return render_template('index.html')  # Assuming 'index.html' is your frontend
+    return render_template('mini_pr.html')
 
-# Route to handle file upload and processing
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"})
-    
-    file = request.files['file']
-    
-    if file.filename == '':
-        return jsonify({"error": "No selected file"})
-    
-    if file and file.filename.endswith('.csv'):
-        # Load the CSV file
-        data = pd.read_csv(file)
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return jsonify({"error": "No file part"})
         
-        # Apply the preprocessing as per your script
-        # (Handling missing values, outliers, etc.)
-        data['Add-on Total'].fillna(data['Add-on Total'].median(), inplace=True)
-        data['Add-ons Purchased'].fillna(data['Add-ons Purchased'].mode()[0], inplace=True)
-        data['Gender'].fillna(data['Gender'].mode()[0], inplace=True)
+        file = request.files['file']
         
-        # Detect and fix outliers (as per your function)
-        def fix_outliers_iqr(df, column):
-            Q1 = df[column].quantile(0.25)
-            Q3 = df[column].quantile(0.75)
-            IQR = Q3 - Q1
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
-            df[column] = np.where(df[column] < lower_bound, lower_bound, df[column])
-            df[column] = np.where(df[column] > upper_bound, upper_bound, df[column])
-            return df
+        if file.filename == '':
+            return jsonify({"error": "No selected file"})
+        
+        if file and file.filename.endswith('.csv'):
+            # Load the CSV file
+            data = pd.read_csv(file)
+            
+            # Apply the preprocessing as per your script
+            # (Handling missing values, outliers, etc.)
+            data['Add-on Total'].fillna(data['Add-on Total'].median(), inplace=True)
+            data['Add-ons Purchased'].fillna(data['Add-ons Purchased'].mode()[0], inplace=True)
+            data['Gender'].fillna(data['Gender'].mode()[0], inplace=True)
+            
+            # Detect and fix outliers (as per your function)
+            def fix_outliers_iqr(df, column):
+                Q1 = df[column].quantile(0.25)
+                Q3 = df[column].quantile(0.75)
+                IQR = Q3 - Q1
+                lower_bound = Q1 - 1.5 * IQR
+                upper_bound = Q3 + 1.5 * IQR
+                df[column] = np.where(df[column] < lower_bound, lower_bound, df[column])
+                df[column] = np.where(df[column] > upper_bound, upper_bound, df[column])
+                return df
 
-        columns_to_fix = ['Total Price', 'Add-on Total']
-        for column in columns_to_fix:
-            data = fix_outliers_iqr(data, column)
+            columns_to_fix = ['Total Price', 'Add-on Total']
+            for column in columns_to_fix:
+                data = fix_outliers_iqr(data, column)
 
-        # Define features and target
-        categorical_features = ['Gender', 'Loyalty Member', 'Order Status', 'Payment Method', 'Shipping Type']
-        numerical_features = ['Age', 'Rating', 'Unit Price', 'Quantity', 'Add-on Total']
+            # Define features and target
+            categorical_features = ['Gender', 'Loyalty Member', 'Order Status', 'Payment Method', 'Shipping Type']
+            numerical_features = ['Age', 'Rating', 'Unit Price', 'Quantity', 'Add-on Total']
 
-        X = data.drop(['Total Price', 'Customer ID'], axis=1)
-        y = data['Total Price']
+            X = data.drop(['Total Price', 'Customer ID'], axis=1)
+            y = data['Total Price']
 
-        preprocessor = ColumnTransformer(
-            transformers=[
-                ('num', StandardScaler(), numerical_features),
-                ('cat', OneHotEncoder(sparse_output=False, handle_unknown='ignore'), categorical_features)
-            ])
+            preprocessor = ColumnTransformer(
+                transformers=[
+                    ('num', StandardScaler(), numerical_features),
+                    ('cat', OneHotEncoder(sparse_output=False, handle_unknown='ignore'), categorical_features)
+                ])
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-        X_train = preprocessor.fit_transform(X_train)
-        X_test = preprocessor.transform(X_test)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            X_train = preprocessor.fit_transform(X_train)
+            X_test = preprocessor.transform(X_test)
 
-        lr = LinearRegression()
-        lr.fit(X_train, y_train)
-        y_pred = lr.predict(X_test)
+            lr = LinearRegression()
+            lr.fit(X_train, y_train)
+            y_pred = lr.predict(X_test)
 
-        # Model evaluation
-        r2 = r2_score(y_test, y_pred)
-        mae = mean_absolute_error(y_test, y_pred)
-        mse = mean_squared_error(y_test, y_pred)
+            # Model evaluation
+            r2 = r2_score(y_test, y_pred)
+            mae = mean_absolute_error(y_test, y_pred)
+            mse = mean_squared_error(y_test, y_pred)
 
-        # Send the evaluation results back to the frontend
-        results = {
-            "r2": r2,
-            "mae": mae,
-            "mse": mse
-        }
+            # Send the evaluation results back to the frontend
+            results = {
+                "r2": r2,
+                "mae": mae,
+                "mse": mse
+            }
 
-        return jsonify(results)
+            return jsonify(results)
 
-    return jsonify({"error": "Unsupported file format"})
+        return jsonify({"error": "Unsupported file format"})
+    return render_template('uploadpage.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact_us_page.html')
+
+@app.route('/about')
+def about():
+    return render_template('About_us_page.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
