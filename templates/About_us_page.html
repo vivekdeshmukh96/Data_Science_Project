@@ -3,99 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
+    <title>About Us</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='About_us_page.css') }}">
-
 </head>
 <body>
-
-    <!-- Navbar Section -->
-    <nav class="navbar">
-        <ul>
-            <li><a href="/" id="home-link" class="text-hover">Home</a></li>
-            <li><a href="/upload" class="text-hover">Upload</a></li>
-            <li><a href="/contact" class="text-hover">Contact Us</a></li>
-            <li><a href="/about" class="text-hover">About Us</a></li>
-        </ul>
-    </nav>
-
-    <!-- Page Content Section -->
-   
-
-    <!-- Automatic Card Slider Section -->
-    <div class="slider-container">
-        <div class="slider">
-            <div class="slide">
-                <div class="card">
-                    <img src="member1.jpg" alt="Member 1">
-                    <h2>David Dell</h2>
-                    <p>The lorem text the section that contains header with having open functionality.</p>
-                    <button>View More</button>
-                </div>
-            </div>
-            <div class="slide">
-                <div class="card">
-                    <img src="member2.jpg" alt="Member 2">
-                    <h2>Rose Bush</h2>
-                    <p>The lorem text the section that contains header with having open functionality.</p>
-                    <button>View More</button>
-                </div>
-            </div>
-            <div class="slide">
-                <div class="card">
-                    <img src="member3.jpg" alt="Member 3">
-                    <h2>Jones Gail</h2>
-                    <p>The lorem text the section that contains header with having open functionality.</p>
-                    <button>View More</button>
-                </div>
-            </div>
-            <div class="slide">
-                <div class="card">
-                    <img src="member4.jpg" alt="Member 4">
-                    <h2>Member 4</h2>
-                    <p>The lorem text the section that contains header with having open functionality.</p>
-                    <button>View More</button>
-                </div>
-            </div>
-        </div>
-        <div class="indicators">
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-        </div>
-    </div>
-
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        const indicators = document.querySelectorAll('.indicator');
-        let currentIndex = 0;
-
-        function showSlide(index) {
-            const slider = document.querySelector('.slider');
-            slider.style.transform = `translateX(-${index * 100}%)`;
-            indicators.forEach((indicator, i) => {
-                indicator.classList.toggle('active', i === index);
-            });
-        }
-
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        }
-
-        setInterval(nextSlide, 3000);  // Change slide every 3 seconds
-
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                currentIndex = index;
-                showSlide(currentIndex);
-            });
-        });
-
-        showSlide(currentIndex);
-    </script>
-
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('upload') }}">Upload</a>
+        </nav>
+    </header>
+    <main>
+        <h1>About Us</h1>
+        <p>This is the about us page.</p>
+    </main>
 </body>
 </html>

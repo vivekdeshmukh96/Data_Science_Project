@@ -3,60 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload CSV</title>
+    <title>Upload</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='uploadpage.css') }}">
 </head>
 <body>
-    <nav class="navbar">
-        <ul>
-            <li><a href="mini_pr.html" class="text-hover">Home</a></li>
-            <li><a href="uploadpage.html" id="upload-link" class="text-hover active-link">Upload</a></li>
-            <li><a href="contact_us_page.html" class="text-hover">Contact Us</a></li>
-            <li><a href="#" class="text-hover">About Us</a></li>
-        </ul>
-    </nav>
-
-    <div class="upload-container" id="uploadContainer">
-        <h1>Upload a CSV File</h1>
-    <form id="uploadForm" method="POST" enctype="multipart/form-data" action="/upload">
-
-
-            <label for="csvFileUpload">Drag & Drop to Upload CSV File</label>
-            <input type="file" name="file" id="csvFileUpload" accept=".csv" required>
-            <p id="fileMessage"></p>
-
-            <div class="button-container">
-                <button id="browseButton" type="button">Browse File</button>
-                <button type="submit" id="uploadButton" style="display: none;">Upload</button>
-            </div>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('upload') }}">Upload</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Upload a CSV file to get started</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
         </form>
-    </div>
-
-    <script>
-        const fileInput = document.getElementById('csvFileUpload');
-        const fileMessage = document.getElementById('fileMessage');
-        
-        document.getElementById('browseButton').addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file && file.name.endsWith('.csv')) {
-                fileMessage.textContent = "CSV file is ready to be uploaded.";
-                fileMessage.style.color = "green";
-                document.getElementById('uploadButton').style.display = 'inline-block';
-                document.getElementById('uploadButton').addEventListener('click', () => {
-    document.getElementById('uploadForm').submit();
-});
-
-            } else {
-                fileMessage.textContent = "Please upload a valid CSV file.";
-                fileMessage.style.color = "red";
-                document.getElementById('uploadButton').style.display = 'none';
-                fileInput.value = '';
-            }
-        });
-    </script>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </main>
 </body>
 </html>

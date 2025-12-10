@@ -83,7 +83,7 @@ def upload():
 
                 # Scaling numerical columns
                 num_cols_to_scale = ['Monthly_Salary', 'Age', 'Work_Hours_Per_Week', 'Projects_Handled',
-                            'Overtime_Hours', 'Sick_Days', 'Training_Hours', 'Employee_Satisfaction_Score']
+                            'Overtime_Hours', 'Sick_Days', 'Training_Hours']
                 standard_scaler = StandardScaler()
                 data[num_cols_to_scale] = standard_scaler.fit_transform(data[num_cols_to_scale])
 
@@ -104,6 +104,9 @@ def upload():
                 # Store the results in session or pass them directly to the results page
                 return redirect(url_for('results', mse=round(mse, 2), r2=round(r2, 2)))
 
+            except KeyError as e:
+                flash(f'A required column was not found in the uploaded file: {e}')
+                return redirect(request.url)
             except Exception as e:
                 flash(f'Error processing file: {str(e)}')
                 return redirect(request.url)
