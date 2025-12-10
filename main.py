@@ -49,6 +49,16 @@ def upload():
                 # Load dataset
                 data = pd.read_csv(file_path)
 
+                # Convert date/time columns to numeric
+                for col in data.columns:
+                    if data[col].dtype == 'object':
+                        try:
+                            data[col] = pd.to_datetime(data[col])
+                            data[col] = data[col].apply(lambda x: x.toordinal())
+                        except (ValueError, TypeError):
+                            # Not a date column, so ignore
+                            pass
+
                 # Check for necessary columns
                 required_columns = [
                     'Team_Size', 'Promotions', 'Remote_Work_Frequency', 'Resigned',
