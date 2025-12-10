@@ -18,8 +18,28 @@
 
     <div class="result-container">
         <h1>Processing Results</h1>
+
+        <h2>Algorithm Results</h2>
         <p><strong>Mean Squared Error (MSE):</strong> {{ mse }}</p>
         <p><strong>R-squared (R²):</strong> {{ r2 }}</p>
+
+        <h2>Data Overview</h2>
+        <p><strong>Shape of the data:</strong> {{ data_shape }}</p>
+        
+        <h3>Data Head:</h3>
+        <div>{{ data_head | safe }}</div>
+        
+        <h3>Data Info:</h3>
+        <pre>{{ data_info }}</pre>
+
+        <h3>Descriptive Statistics:</h3>
+        <div>{{ data_describe | safe }}</div>
+
+        <h2>Outlier Analysis</h2>
+        <h3>Boxplot:</h3>
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Boxplot">
+
+        <br>
         <a href="{{ url_for('upload') }}" class="text-hover">Upload Another File</a>
     </div>
 </body>

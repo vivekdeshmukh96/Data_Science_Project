@@ -1,6 +1,11 @@
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 import pandas as pd
 import os
+import io
+import base64
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
@@ -48,6 +53,27 @@ def upload():
             try:
                 # Load dataset
                 data = pd.read_csv(file_path)
+
+                # Data analysis
+                data_shape = data.shape
+                data_head = data.head().to_html()
+                
+                # Get data info
+                buf = io.StringIO()
+                data.info(buf=buf)
+                data_info = buf.getvalue()
+
+                data_describe = data.describe().to_html()
+
+                # Generate boxplot
+                plt.figure(figsize=(10, 6))
+                sns.boxplot(data=data)
+                plt.xticks(rotation=90)
+                img = io.BytesIO()
+                plt.savefig(img, format='png')
+                img.seek(0)
+                plot_url = base64.b64encode(img.getvalue()).decode()
+
 
                 # Convert date/time columns to numeric
                 for col in data.columns:
@@ -111,8 +137,15 @@ def upload():
                 mse = mean_squared_error(y_test, y_pred)
                 r2 = r2_score(y_test, y_pred)
 
-                # Store the results in session or pass them directly to the results page
-                return redirect(url_for('results', mse=round(mse, 2), r2=round(r2, 2)))
+                # Render the results page with all the data
+                return render_template('processed.html', 
+                                     mse=round(mse, 2), 
+                                     r2=round(r2, 2),
+                                     data_shape=data_shape,
+                                     data_head=data_head,
+                                     data_info=data_info,
+                                     data_describe=data_describe,
+                                     plot_url=plot_url)
 
             except KeyError as e:
                 flash(f'A required column was not found in the uploaded file: {e}')
@@ -127,9 +160,8 @@ def upload():
 
 @app.route('/results')
 def results():
-    mse = request.args.get('mse')
-    r2 = request.args.get('r2')
-    return render_template('processed.html', mse=mse, r2=r2)
+    # This route is now mostly for direct access, the main flow is handled by upload()
+    return render_template('processed.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
