@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("BGBLUE.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fffdfd;
+    padding: 15px 0;
+    border-radius: 55px;
+    margin: 10px auto;
+    width: 80%;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    gap: 20px;
+}
+
+.navbar li a {
+    text-decoration: none;
+    font-size: large;
+    font-weight: bolder;
+    color: black;
+    padding: 10px 20px;
+}
+
+a.text-hover {
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    text-decoration: none;
+    color: black;
+}
+
+a.text-hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+}
+
+a.text-hover:hover {
+    color: rgb(9, 9, 11);
+}
+
+a.text-hover:hover::after {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+a.active-link {
+    border-bottom: 2px solid black;
+}
+
+.upload-container {
+    background-color: #f3f3f3;
+    padding: 50px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 20px 20px 0px rgb(73, 143, 242);
+    width: 350px;
+}
+
+.result-container {
+    background-color: #f3f3f3;
+    padding: 50px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 20px 20px 0px rgb(73, 143, 242);
+    width: 350px;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Results</title>
+    <link rel="stylesheet" href="uploadpage.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="mini_pr.html" class="text-hover">Home</a></li>
+            <li><a href="uploadpage.html" class="text-hover">Upload</a></li>
+            <li><a href="contact_us_page.html" class="text-hover">Contact Us</a></li>
+            <li><a href="#" class="text-hover">About Us</a></li>
+        </ul>
+    </nav>
+
+    <div class="result-container">
+        <h1>Processing Results</h1>
+        <p><strong>Mean Squared Error (MSE):</strong> {{ mse }}</p>
+        <p><strong>R-squared (R²):</strong> {{ r2 }}</p>
+        <a href="uploadpage.html" class="text-hover">Upload Another File</a>
+    </div>
+</body>
+</html>
