@@ -57,7 +57,7 @@ def upload():
                 # Data analysis
                 data_shape = data.shape
                 data_head = data.head().to_html()
-                
+
                 # Get data info
                 buf = io.StringIO()
                 data.info(buf=buf)
@@ -138,8 +138,8 @@ def upload():
                 r2 = r2_score(y_test, y_pred)
 
                 # Render the results page with all the data
-                return render_template('processed.html', 
-                                     mse=round(mse, 2), 
+                return render_template('processed.html',
+                                     mse=round(mse, 2),
                                      r2=round(r2, 2),
                                      data_shape=data_shape,
                                      data_head=data_head,
@@ -153,7 +153,7 @@ def upload():
             except Exception as e:
                 flash(f'Error processing file: {str(e)}')
                 return redirect(request.url)
-    
+
     # If it's a GET request, render the upload page
     return render_template('uploadpage.html')
 
